@@ -1,0 +1,3 @@
+include gui/Eulitha_icon.ico
+recursive-include *.pyd
+global-exclude *.py[c]
