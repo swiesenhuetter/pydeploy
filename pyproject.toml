@@ -2,3 +2,8 @@
 requires = ["setuptools", "wheel", "Cython"]
 build-backend = "setuptools.build_meta"
 
+[project]
+
+dependencies = [
+    PySide6
+]

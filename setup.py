@@ -7,14 +7,16 @@ with open("README.md", 'r') as f:
     long_description = f.read()
 
 files = ["main.py", "gui/gui.py"]
-cython_excludes = ["__init__.py"]
+cython_excludes = ["**/__init__.py"]
 
 Options.docstrings = False  # remove comments
 
 
 class skip_py(build_py):
-    def build_packages(self):
-        pass
+    def find_package_modules(self, package, package_dir):
+        modules = super().find_package_modules(package, package_dir)
+        init_files = list(filter(lambda x: "__init__.py" in x[2], modules))
+        return init_files
 
 
 compiled = cythonize(files,
@@ -28,7 +30,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     name="eulitha",
-    version="0.0.1",
+    version="0.0.2",
     description="Eulitha Phabler GUI",
     long_description=long_description,
     install_requires=["PySide6"],
