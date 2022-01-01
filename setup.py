@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
-from setuptools.dist import Distribution
-
+from setuptools.command.build_py import build_py
 from Cython.Build import cythonize
 from Cython.Compiler import Options
 
@@ -8,14 +7,15 @@ with open("README.md", 'r') as f:
     long_description = f.read()
 
 files = ["main.py", "gui/gui.py"]
-cython_excludes = []
-
-class BinDist(Distribution):
-    def is_pure(self):
-        return False
-
+cython_excludes = ["__init__.py"]
 
 Options.docstrings = False  # remove comments
+
+
+class skip_py(build_py):
+    def build_packages(self):
+        pass
+
 
 compiled = cythonize(files,
     exclude=cython_excludes,
@@ -23,17 +23,21 @@ compiled = cythonize(files,
     force=True,
     compiler_directives={'language_level': "3"})
 
-
 setup(
     author="Eulitha AG",
     packages=find_packages(),
-    # include_package_data=True,
+    include_package_data=True,
     name="eulitha",
     version="0.0.1",
+    description="Eulitha Phabler GUI",
+    long_description=long_description,
+    install_requires=["PySide6"],
+    setup_requires=["setuptools", "cython", "wheel"],
+    ext_modules=compiled,
+    cmdclass={'build_py': skip_py},
     entry_points={
         'console_scripts': [
             'eulitha = gui:main'
         ]
     },
-    distclass=BinDist,
-    ext_modules=compiled)
+    )
