@@ -2,12 +2,17 @@ import sys
 import random 
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 from PySide6.QtGui import QIcon
+import os
+
+
+RootFolder = os.path.dirname(os.path.abspath(__file__))
 
 class MainWin(QMainWindow):
     def __init__(self, *args):
         super(MainWin, self).__init__(*args)
-        self.setWindowTitle("My Application GUI")
+        self.setWindowTitle("Here: {}".format(RootFolder))
         self.setWindowIcon(QIcon("gui/Eulitha_icon.ico"))
+        self.setFixedWidth(500)
         self.button = QPushButton("Press Me!")
         self.button.setToolTip("This is a <b>QPushButton</b> widget")
         self.button.setStyleSheet("background-color: red")
